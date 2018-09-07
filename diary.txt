@@ -1,0 +1,12 @@
+13/10/17	18:00	22:30	Create database and Filehelper
+14/10/17    9:00    22:30   Finish and test database and Filehelper
+15/10/17    20:00   22:30   Update DBhelper
+16/10/17    13:00   23:30   Still Update DBhelper and Filehelper, finish main page, login, logout, sign_up and user_info page.
+17/10/17    9:00    23:30   Finish post_list , comment and reply. Finish insert reply.
+18/10/17    10:00   23:30   Finish friend request and email send thread, delete post,comment,reply and inset post,comment,reply. Finish pagination
+                            of result and post comments. And debuging.
+20/10/17    4:00    11:30   Finish friend suggestion, email notification, account suspend and delete, password change.
+21/10/17    9:00    14:00   Finish pravicy, delete img and upload img, some describe of profile. Test all data form small to large. All of them worked well.
+25/10/17    14:00   16:00   Debuging in CSE computer
+26/10/17    9:00    12:00   Optimize web
+27/10/17    14:00   22:00   Debuging on cgi

@@ -1,0 +1,166 @@
+{% extends "main.html" %}
+{% block body %}
+<div class="">
+    <h1>Post</h1>
+    <hr />
+    <div class="d-flex w-100 justify-content-between">
+        <samll>From:<a href="{{url_for('user_info') + mpost['from']|safe}}"> {{ mpost['from'] }}</a></samll>
+        <samll>Time: {{ mpost['time'] }}</samll>
+    </div>
+    <h5 style="padding-top:10px;padding-bottom:10px">{{mpost['message']|safe}}</h5>
+    <div class="d-flex w-100 justify-content-between">
+        <samll>latitude: {{ mpost['latitude'] }}</samll>
+        <samll>longitude: {{ mpost['longitude'] }}</samll>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" type="button padding-bottom:10px" data-toggle="collapse" data-target="#postcollapse" aria-expanded="false" aria-controls="postcollapse">
+            Comment
+        </button>
+        {% if mpost['from'] == session['zid'] %}
+        <form action="{{url_for('delete_post')}}" method="post">
+                <button type="submit" class="btn btn-warning btn-sm" name="Delete_post">Delete post</button>
+        </form>
+        {% endif %}
+    </div>
+    <div class="collapse" id="postcollapse">
+        <div class="card card-body">
+            <form class="" action="{{url_for('reply_post')}}" method="post">
+                <textarea name="message" class="form-control" placeholder="Enter comment" rows="8" cols="80"></textarea>
+                <button type="submit" class="btn btn-primary btn-sm" name="button">Comment</button>
+            </form>
+        </div>
+    </div>
+    <hr />
+</div>
+<ul class="list-group" style="width:100%">
+    {% for pair in crl %}
+      <li class="list-group-item">
+          <div class="media">
+          {% if pair['comment']['from'] %}
+          <img class="d-flex mr-3 rounded-circle" style="width:65px" src="{{ url_for('static',filename=User_img_path[pair['comment']['from']]) }}?{{ range(1, 100000000) | random }}">
+          {% else %}
+          <img class="d-flex mr-3 rounded-circle" style="width:65px" src="{{ url_for('static',filename='img/userphotos/default_user.png') }}?{{ range(1, 100000000) | random }}">
+          {% endif %}
+          <div class="media-body">
+              <div class="d-flex w-100 justify-content-between">
+                  {% if pair['comment']['from'] %}
+                  <h5 class="mt-0"><a href="{{ url_for('user_info') + pair['comment']['from']|safe }}">{{ pair['comment']['from']|safe }}</a></h5>
+                  {% else %}
+                  <h5 class="mt-0">Missing zid</h5>
+                  {% endif %}
+                  <samll>Time: {{ pair['comment']['time'] }}</samll>
+              </div>
+              <div style="padding-bottom:10px">
+                    {{ pair['comment']['message']|safe}}
+              </div>
+
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#replyModal_{{pair['comment']['id']|safe}}">Reply</button>
+                  {% if pair['comment']['from'] == session['zid'] %}
+                  <form class="" action="{{url_for('delete_comment')}}" method="post">
+                       <button type="submit" value="{{ pair['comment']['id']|safe }}"  name="Delete_comment" class="btn btn-warning btn-sm">Delete</button>
+                  </form>
+                  {% endif %}
+              </div>
+              <!-- Modal -->
+                <div class="modal fade" id="replyModal_{{pair['comment']['id']|safe}}" tabindex="-1" role="dialog" aria-labelledby="replyModal_{{pair['comment']['id']|safe}}" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="replyModal_{{pair['comment']['id']|safe}}">Reply to this comment</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <form class="" action="{{url_for('reply_comment')}}" method="post">
+                          <div class="modal-body">
+                              <div class="form-group">
+                                  <textarea name="message" class="form-control" placeholder="Enter reply" rows="8" cols="80"></textarea>
+                                  <input type="hidden" name="reply_comment_id" value="{{ pair['comment']['id']|safe }}">
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Reply</button>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+            {% for reply in pair['reply'] %}
+            <hr />
+            <div class="media mt-3">
+                {% if reply['from'] %}
+                <img class="d-flex mr-3 rounded-circle" style="width:65px" src="{{ url_for('static',filename=User_img_path[reply['from']]) }}?{{ range(1, 100000000) | random }}">
+                {% else %}
+                <img class="d-flex mr-3 rounded-circle" style="width:65px" src="{{ url_for('static',filename='img/userphotos/default_user.png') }}?{{ range(1, 100000000) | random }}">
+                {% endif %}
+                <div class="media-body">
+                <div class="d-flex w-100 justify-content-between">
+                    {% if reply['from'] %}
+                    <h5 class="mt-0"><a href="{{ url_for('user_info') + reply['from']|safe }}">{{ reply['from']|safe }}</a></h5>
+                    {% else %}
+                    <h5 class="mt-0">Missing zid</h5>
+                    {% endif %}
+                    <samll>Time: {{ reply['time'] }}</samll>
+                </div>
+                <p>{{reply['message']|safe}}</p>
+                {% if reply['from'] == session['zid'] %}
+                <form class="" action="{{url_for('delete_reply')}}" method="post">
+                    <button type="submit" value="{{ reply['id'] }}" class="d-flex btn btn-warning btn-sm" style="float:right" name="Delete_reply">Delete</button>
+                </form>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </li>
+  {% endfor %}
+</ul>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        {% if (pagination_num-1) >= 1%}
+        <li class="page-item">
+            <a class="page-link" href="{{url_for('post')+session['viewing_post']|safe}}?page={{pagination_num-1}}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        {% endif %}
+        {% for i in range(1,total_page+1) %}
+            {% if pagination_num - 4 <= i <= pagination_num + 4 %}
+                {% if pagination_num == i%}
+                    <li class="page-item active"><a class="page-link" href="{{url_for('post')+session['viewing_post']|safe}}?page={{i}}">{{i}}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="{{url_for('post')+session['viewing_post']|safe}}?page={{i}}">{{i}}</a></li>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+        {% if (pagination_num) >= total_page %}
+        <li class="page-item disabled">
+            <a class="page-link" href="" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" href="{{url_for('post')+session['viewing_post']|safe}}?page={{pagination_num+1}}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="container">
+    <div class="row" style="margin-top: 20px">
+        <div class="">
+            <img src="{{ url_for('static',filename = user_info['img']) }}?{{ range(1, 100000000) | random }}" class="img-thumbnail" height="150" width="150">
+        </div>
+        <div class="col-sm-2">
+            <!-- left blank -->
+        </div>
+        <div class="col-sm-8">
+            <form class="" action="{{url_for('friend_request_process')}}" method="post">
+                <div class="col-sm-2">
+                    <!-- left blank -->
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="zid">zID</label>
+                            <p class="h5">
+                                {% if user_info['zid'] %}
+                                    {{ user_info['zid'] }}
+                                {% else %}
+                                    Empty
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="fullname">Full Name</label>
+                            <p class="h5">
+                                {% if user_info['full_name'] %}
+                                    {{ user_info['full_name'] }}
+                                {% else %}
+                                    Empty
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" name="receiver" value="{{receiver}}">
+                <input type="hidden" name="sender" value="{{user_info['zid']}}">
+                <button type="submit" class="btn btn-primary" value="accept" name="accept">accept</button>
+                <button type="submit" class="btn btn-warning" value="reject" name="reject">reject</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

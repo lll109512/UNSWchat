@@ -1,0 +1,77 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="container">
+    <div class="row" style="margin-top: 20px">
+        <div class="col-sm-2">
+            <!-- left blank -->
+        </div>
+        <div class="col-sm-8">
+            <form method="POST" action="{{url_for('sign_up')}}">
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="zid">zID *</label>
+                            <input type="text" class="form-control" id="zid" placeholder="Enter your zID" name="zid">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="fullname">Full Name *</label>
+                            <input type="text" class="form-control" id="fullname" placeholder="Enter your full name" name="fullname">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mail">Email address *</label>
+                    <input type="email" class="form-control" id="mail" aria-describedby="emailHelp" placeholder="Enter zMail address" name="mail">
+                    <small id="mailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="password" class="col-form-label">Password *</label>
+                            <input type="password" class="form-control" id="password" placeholder="Enter your password" name="password">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="password2" class="col-form-label">Confirm Password *</label>
+                            <input type="password" class="form-control" id="password2" placeholder="Enter your password again" name="password2">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="suburb">Home Suburb</label>
+                    <input type="text" class="form-control" id="suburb" placeholder="Enter your suburb" name="suburb">
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="longitude" class="col-form-label">Longitude</label>
+                            <input type="text" class="form-control" id="longitude" placeholder="longitude">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="latitude" class="col-form-label">Latitude</label>
+                            <input type="text" class="form-control" id="latitude" placeholder="latitude">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="program">Program</label>
+                    <input type="text" class="form-control" id="program" placeholder="Enter your program" name="program">
+                </div>
+                <div class="form-group">
+                    <label for="program">Courses</label>
+                    <input type="text" class="form-control" id="courses" aria-describedby="courseHelp" placeholder="Enter your courses" name="courses">
+                    <small id="courseHelp" class="form-text text-muted">Divide by ","</small>
+                </div>
+                <div class="form-group">
+                    <label for="friends">Birthday</label>
+                    <input type="text" class="form-control" id="birthday" aria-describedby="birthdayHelp" placeholder="Enter your birthday" name="birthday">
+                    <small id="birthdayHelp" class="form-text text-muted">eg: 1996-04-06</small>
+                </div>
+                <button type="submit" class="btn btn-warning">Submit</button>
+            </form>
+        </div>
+        <div class="col-sm-2">
+            <!-- right blank -->
+        </div>
+    </div>
+</div>
+{% endblock %}

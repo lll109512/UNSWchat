@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>-->
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
+    <!-- <link rel="stylesheet" href="Stargate.css"> -->
+    <title>UNSWTalk</title>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <!--
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    -->
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+        <a class="navbar-brand" href="{{ url_for('main') }}">UNSWTalk</a>
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('new_post')}}">New post</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('friend_suggestion')}}">Friend Suggestions</a>
+            </li>
+        </ul>
+        {% if not session.login %}
+        <form class="form-inline my-2 my-lg-0" method="post" action="{{url_for('log_in_out_function')}}">
+            <input class="form-control mr-sm-2" type="text" placeholder="zID" name="zid" value="{{ request.form.zid }}">
+            <input class="form-control mr-sm-2" type="password" placeholder="password" name="password" value="{{ request.form.password }}">
+            <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Login</button>
+        </form>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('forget_pass')}}">Forget password?</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('sign_up') }}">Sign up</a>
+            </li>
+        </ul>
+        {% else %}
+        <ul class="navbar-nav inline">
+            <form class="form-inline my-2 my-lg-0" method="post" action="{{url_for('searchresult')}}">
+                <input class="form-control mr-sm-2" type="text" placeholder="Search name or post" name="smessage" value="">
+                <button class="btn btn-outline-warning my-2 my-sm-0" type="submit">Search</button>
+            </form>
+            <span class="navbar-text">
+                &nbsp;&nbsp;&nbsp;
+            </span>
+            <span class="navbar-text">
+                {{ session.zid }}
+            </span>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="https://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Options
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" href="{{ url_for('user_info') + session['zid'] }}">User Info</a>
+                    <a class="dropdown-item" href="{{ url_for('edit_user_info') }}">Edit your info</a>
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#Suspendmodal">Suspend Account</button>
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#Deletemodal">Delete Account</button>
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#Privacymodal">Privacy Change</button>
+                    <button class="dropdown-item" type="button" data-toggle="modal" data-target="#Passwordmodal">Change Password</button>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('log_in_out_function') }}?logout=True">Log out</a>
+            </li>
+        </ul>
+        {% endif %}
+    </div>
+</nav>
+
+<div class="container" style="min-height:100%;width:80%;padding-top:20px">
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-warning alert-dismissible" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        {{message}}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+</div>
+
+<div class="container">
+    <div class="modal fade" id="Suspendmodal" tabindex="-1" role="dialog" aria-labelledby="SuspendmodalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="SuspendmodalLabel">Suspend UNSWtalk Account</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form class="" action="{{url_for('suspend')}}" method="post">
+              {% if not session['suspend'] %}
+              <div class="modal-body">
+                If you suspend your account, your account will not visiable to other student.
+                Click to continue.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" name="suspend" class="btn btn-primary" value="suspend">Suspend</button>
+              </div>
+              {% else %}
+              <div class="modal-body">
+                Your account is suspended.
+                Click to unsuspend.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" name="suspend" class="btn btn-primary" value="unsuspend">Unsuspend</button>
+              </div>
+              {% endif %}
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+        <div class="modal fade" id="Deletemodal" tabindex="-1" role="dialog" aria-labelledby="DeletemodalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="DeletemodalLabel">Delete UNSWtalk Account</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                If you delete account, All post and related comment, reply and friend with be deleted.
+                <br />
+                Please comfirm this critical operation
+              </div>
+              <div class="modal-footer">
+                  <form class="" action="{{url_for('delete_account')}}" method="post">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="submit" name="delete_account" class="btn btn-primary" value="ORZ">Yes</button>
+                  </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container">
+            <div class="modal fade" id="Privacymodal" tabindex="-1" role="dialog" aria-labelledby="PrivacymodalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="PrivacymodalLabel">Setting Privacy</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form class="" action="{{url_for('set_privacy')}}" method="post">
+                      <div class="modal-body">
+                        <br />
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="Privacyoption" id="inlineRadio1" value="0" {{'checked' if session['privacy'] == '0'}}> User info page visiable to all people
+                          </label>
+                        </div>
+                        <div class="form-check">
+                          <label class="form-check-label">
+                            <input class="form-check-input" type="radio" name="Privacyoption" id="inlineRadio2" value="1" {{'checked' if session['privacy'] == '1'}}> User info page only visiable to friends
+                          </label>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="submit" name="delete_account" class="btn btn-primary">Yes</button>
+                      </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="container">
+                <div class="modal fade" id="Passwordmodal" tabindex="-1" role="dialog" aria-labelledby="PasswordmodalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="PasswordmodalLabel">Change password</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <form class="" action="{{url_for('change_password')}}" method="post">
+                          <div class="d-flex flex-column">
+                              <div class="d-flex justify-content-center">
+                                  <div class="form-group col-md-6">
+                                      <label for="password" class="col-form-label">New Password *</label>
+                                      <input type="password" class="form-control" id="password" placeholder="Enter your password" name="password">
+                                  </div>
+                                  <div class="form-group col-md-6">
+                                      <label for="password2" class="col-form-label">Confirm Password *</label>
+                                      <input type="password" class="form-control" id="password2" placeholder="Enter your password again" name="password2">
+                                  </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                              <button type="submit" name="delete_account" class="btn btn-primary">Submit</button>
+                          </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+    {% block content %}{% endblock %}
+</div>
+</body>
+</html>

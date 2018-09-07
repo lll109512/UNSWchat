@@ -1,0 +1,12 @@
+#!/usr/bin/python3.6
+import Helper
+import time
+
+if __name__ == '__main__':
+    dbhelper = Helper.DBhelper("myuserDB.db","123")
+    Fhelper = Helper.Filehelper("dataset-large","default_user.png","img/userphotos")
+    dbhelper.CreateDB("recover.sql")
+    for userid in Fhelper.User_list:
+        dbhelper.InsertUser(Fhelper.UserInfo(userid))
+    Fhelper.LoadPostsInDB(dbhelper)
+    dbhelper.ReorganizeFriendList()

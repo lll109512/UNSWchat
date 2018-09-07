@@ -1,0 +1,14 @@
+{% extends "header.html" %}
+{% block content %}
+{% if 'login' in session and session['login'] %}
+    {% block body %}
+    {% endblock %}
+{% else %}
+<div class="jumbotron">
+    <h1 class="display-3">Welcome to UNSWTalk!</h1>
+    <p class="lead">A great and powerful post Dashbord.</p>
+    <hr class="my-4">
+    <p>You need to assign login or <a href="{{url_for('sign_up')}}">sign up</a> to see other student's activities</p>
+</div>
+{% endif %}
+{% endblock %}

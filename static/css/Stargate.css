@@ -1,0 +1,25 @@
+.login-form {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.register-main {
+    margin-top: 20px;
+}
+
+.register-first-line {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.register-line {
+    margin-bottom: 20px;
+}
+
+.register-column {
+    height: 50px;
+}
+
+.main-left-option {
+    margin: 12px;
+}

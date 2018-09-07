@@ -1,0 +1,159 @@
+{% extends "main.html" %}
+{% block body %}
+<div class="container">
+    <div class="row" style="margin-top: 20px">
+        <div class="">
+            <img src="{{ url_for('static',filename = user_info['img']) }}?{{ range(1, 100000000) | random }}" class="img-thumbnail" height="150" width="150">
+            {% if session['zid'] != session['viewing_user_info_zid'] %}
+            <form class="" style="padding-top:10px" action="{{url_for('friend_ops')}}" method="post">
+                {% if session['zid'] in user_info['friends'] %}
+                <button type="submit" class="btn btn-warning btn-sm" name="friend" value="unfriend">unfriend</button>
+                {% else %}
+                <button type="submit" class="btn btn-primary btn-sm" name="friend" value="request">request</button>
+                {% endif %}
+            </form>
+            {% endif %}
+        </div>
+        <div class="col-sm-2">
+            <!-- left blank -->
+        </div>
+        <div class="col-sm-8">
+            {% if session['zid'] == user_info['zid'] or privacy_level == '0' or session['zid'] in user_info['friends'] %}
+            <form>
+                <div class="col-sm-2">
+                    <!-- left blank -->
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="zid">zID</label>
+                            <p class="h5">
+                                {% if user_info['zid'] %}
+                                    {{ user_info['zid'] }}
+                                {% else %}
+                                    Empty
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="fullname">Full Name</label>
+                            <p class="h5">
+                                {% if user_info['full_name'] %}
+                                    {{ user_info['full_name'] }}
+                                {% else %}
+                                    Empty
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mail">Email address</label>
+                    <p class="h5">
+                        {% if user_info['email'] %}
+                            {{ user_info['email'] }}
+                        {% else %}
+                            Empty
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="suburb">Home Suburb</label>
+                    <p class="h5">
+                        {% if user_info['home_suburb'] %}
+                            {{ user_info['home_suburb'] }}
+                        {% else %}
+                            Empty
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="longitude" class="col-form-label">Longitude</label>
+                            <p class="h5">
+                                {% if user_info['home_longitude'] %}
+                                    {{ user_info['home_longitude'] }}
+                                {% else %}
+                                    Empty
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="latitude" class="col-form-label">Latitude</label>
+                            <p class="h5">
+                                {% if user_info['home_latitude'] %}
+                                    {{ user_info['home_latitude'] }}
+                                {% else %}
+                                    Empty
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="program">Program</label>
+                    <p class="h5">
+                        {% if user_info['program'] %}
+                            {{ user_info['program'] }}
+                        {% else %}
+                            Empty
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="courses">Courses</label>
+                    <p class="h6">
+                        {% if user_info['courses'] %}
+                            {{ ' , '.join(user_info['courses']) }}
+                        {% else %}
+                            Empty
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="friends">Friends zid</label>
+                    <p class="h6">
+                        {% if user_info['friends'] %}
+                            {{ ' , '.join(user_info['friends']) }}
+                        {% else %}
+                            Empty
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="birthday">Birthday</label>
+                    <p class="h5">
+                        {% if user_info['birthday'] %}
+                            {{ user_info['birthday'] }}
+                        {% else %}
+                            Empty
+                        {% endif %}
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label for="Profile">Profile</label>
+                    <p class="h5">
+                        {% if profile %}
+                            {{ profile|safe }}
+                        {% else %}
+                            Empty
+                        {% endif %}
+                    </p>
+                </div>
+            </form>
+        </div>
+        {% else %}
+        <div class="jumbotron jumbotron-fluid">
+          <div class="container">
+            <h1 class="display-3">Oops</h1>
+            <p class="lead">You can't view hir/her private information. Be friend and see more.</p>
+          </div>
+        </div>
+        {% endif %}
+        <div class="col-sm-2">
+            <!-- right blank -->
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,69 @@
+{% extends "main.html" %}
+{% block body %}
+<div class="raw">
+    <div style="float:left" class="col-8">
+        <div class="list-group">
+            <h3>Your recent posts</h3>
+            {% for post in My_Post_list %}
+            <a href="{{ url_for('post') + post['id']|safe }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Post: {{ post['id'] }}</h5>
+                    <small>from: {{ post['from'] }}</small>
+                    <small>time: {{ post['time'] }}</small>
+                </div>
+                <p class="mb-1">
+                    {{post['message']|safe}}
+                </p>
+                <small>latitude: {{ post['latitude'] }}</small>
+                <small>longitude: {{ post['longitude'] }}</small>
+            </a>
+            {% endfor %}
+            <hr />
+            <h3 style="padding-top:10px">Posts from your friends</h3>
+            {% for post in Friends_post_list %}
+            <a href="{{ url_for('post') + post['id']|safe }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Post: {{ post['id'] }}</h5>
+                    <small>from: {{ post['from'] }}</small>
+                    <small>time: {{ post['time'] }}</small>
+                </div>
+                <p class="mb-1">
+                    {{post['message']|safe}}
+                </p>
+                <small>latitude: {{ post['latitude'] }}</small>
+                <small>longitude: {{ post['longitude'] }}</small>
+            </a>
+            {% endfor %}
+            <hr />
+            <h3 style="padding-top:10px">Recent post mentioned you</h3>
+            {% for post in Related_post_list%}
+            <a href="{{ url_for('post') + post['id']|safe }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">Post: {{ post['id'] }}</h5>
+                    <small>from: {{ post['from'] }}</small>
+                    <small>time: {{ post['time'] }}</small>
+                </div>
+                <p class="mb-1">
+                    {{post['message']|safe}}
+                </p>
+                <small>latitude: {{ post['latitude'] }}</small>
+                <small>longitude: {{ post['longitude'] }}</small>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+    <div style="float:right" class="col-4">
+        <div class="d-flex card border-dark justify-content-end" style="width: 20rem;">
+            <ul class="list-group list-group-flush">
+                {% for friend in friends_list %}
+                <a href="{{ url_for('user_info') + friend['zid'] }}" class="list-group-item list-group-item-action flex-column align-items-start">
+                    <div class="">
+                        <img src="{{ url_for('static',filename = friend['img']) }}?{{ range(1, 100000000) | random }}" width="60px"> {{ friend['full_name'] }}
+                    </div>
+                </a>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

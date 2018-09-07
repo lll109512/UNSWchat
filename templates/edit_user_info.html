@@ -1,0 +1,95 @@
+{% extends "main.html" %}
+{% block body %}
+<div class="container">
+    <div class="row" style="margin-top: 20px">
+        <div class="">
+            <img src="{{ url_for('static',filename = user_info['img']) }}?{{ range(1, 100000000) | random }}" class="img-thumbnail" height="150" width="150">
+            <form class="" action="{{url_for('upload_img')}}" method="POST" enctype="multipart/form-data">
+                <div class="form-group" style="padding-top:10px">
+                    <label class="custom-file">
+                        <input type="file" style="width:80px" class="custom-file-input" name="file" value="">
+                        <span class="custom-file-control"></span>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-warning" style="width:100px" name="button">Change</button>
+            </form>
+            <div class="">
+                <form action="{{url_for('del_profile_img')}}" method="GET">
+                    <button type="submit" class="btn btn-warning" style="margin-top:10px;width:100px" name="button">Delete</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <!-- left blank -->
+        </div>
+        <div class="col-sm-7">
+            <form method="POST" action="{{url_for('edit_user_info')}}">
+                <div class="col-sm-2">
+                    <!-- left blank -->
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="zid">zID</label>
+                            <p class="h5">
+                                {% if user_info['zid'] %}
+                                    {{ user_info['zid'] }}
+                                {% else %}
+                                    Empty
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" class="form-control" id="fullname" value="{{user_info['full_name']}}" placeholder="Enter your full name" name="fullname">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mail">Email address *</label>
+                    <input type="email" class="form-control" id="mail" aria-describedby="emailHelp" value="{{user_info['email']}}" placeholder="Enter zMail address" name="mail">
+                    <small id="mailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                </div>
+                <div class="form-group">
+                    <label for="suburb">Home Suburb</label>
+                    <input type="text" class="form-control" value="{{user_info['home_suburb']}}" id="suburb" placeholder="Enter your suburb" name="suburb">
+                </div>
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="longitude" class="col-form-label">Longitude</label>
+                            <input type="text" class="form-control" value="{{user_info['home_longitude']}}" name="longitude" id="longitude" placeholder="longitude">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="latitude" class="col-form-label">Latitude</label>
+                            <input type="text" class="form-control" value="{{user_info['home_latitude']}}" name="latitude" id="latitude" placeholder="latitude">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="program">Program</label>
+                    <input type="text" class="form-control" id="program" value="{{user_info['program']}}" placeholder="Enter your program" name="program">
+                </div>
+                <div class="form-group">
+                    <label for="program">Courses</label>
+                    <input type="text" class="form-control" id="courses" value="{{user_info['courses']}}" aria-describedby="courseHelp" placeholder="Enter your courses" name="courses">
+                    <small id="courseHelp" class="form-text text-muted">Divide by ","</small>
+                </div>
+                <div class="form-group">
+                    <label for="friends">Birthday</label>
+                    <input type="text" class="form-control" id="birthday" value="{{user_info['birthday']}}" aria-describedby="birthdayHelp" placeholder="Enter your birthday" name="birthday">
+                    <small id="birthdayHelp" class="form-text text-muted">eg: 1996-04-06</small>
+                </div>
+                <div class="form-group">
+                    <label for="friends">Profile</label>
+                    <textarea name="profile" class="form-control" rows="5" cols="75" placeholder="Enter your Profile">{{profile}}</textarea>
+                </div>
+                <button type="submit" class="btn btn-warning">Submit</button>
+            </form>
+        </div>
+        <div class="col-sm-2">
+            <!-- right blank -->
+        </div>
+    </div>
+</div>
+{% endblock %}

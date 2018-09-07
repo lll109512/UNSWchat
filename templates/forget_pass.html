@@ -1,0 +1,28 @@
+{% extends "header.html" %}
+{% block content %}
+<div class="container">
+    <div class="row" style="margin-top: 20px">
+        <div class="col-sm-2">
+            <!-- left blank -->
+        </div>
+        <div class="col-sm-8">
+            <form method="POST" action="{{url_for('forget_pass')}}">
+                <div class="form-group">
+                    <label for="mail">ZID</label>
+                    <input type="text" class="form-control" id="zid" aria-describedby="zidHelp" placeholder="Enter zid" name="zid">
+                    <small id="zidHelp" class="form-text text-muted">The ZID you used in sign up.</small>
+                </div>
+                <div class="form-group">
+                    <label for="mail">Email address</label>
+                    <input type="email" class="form-control" id="mail" aria-describedby="mailHelp" placeholder="Enter zMail address" name="mail">
+                    <small id="mailHelp" class="form-text text-muted">The email you used in sign up.</small>
+                </div>
+                <button type="submit" class="btn btn-warning">Submit</button>
+            </form>
+        </div>
+        <div class="col-sm-2">
+            <!-- right blank -->
+        </div>
+    </div>
+</div>
+{% endblock %}

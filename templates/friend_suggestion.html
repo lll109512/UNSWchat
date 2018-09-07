@@ -1,0 +1,21 @@
+{% extends "main.html" %}
+{% block body %}
+
+<h3>Maybe you know these people</h3>
+{% if sorce_list %}
+<div class="d-flex card border-dark justify-content-end" style="">
+    <ul class="list-group list-group-flush">
+        {% for sorce_tuple in sorce_list %}
+        <a href="{{ url_for('user_info') + sorce_tuple[1] }}" class="list-group-item list-group-item-action flex-column align-items-start">
+            <div class="">
+                <img src="{{ url_for('static',filename = info_dict[sorce_tuple[1]]['img']) }}?{{ range(1, 100000000) | random }}" width="60px"> &nbsp;&nbsp;&nbsp; {{ info_dict[sorce_tuple[1]]['full_name'] }}
+            </div>
+        </a>
+        {% endfor %}
+    </ul>
+</div>
+{% else %}
+<h6>No result of user</h6>
+{% endif %}
+
+{% endblock %}
